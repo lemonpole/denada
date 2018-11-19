@@ -1,0 +1,87 @@
+@import url( 'https://fonts.googleapis.com/css?family=Roboto:100,400,900' );
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+#root {
+  // Disable text selection, or your app will feel like a web page
+  -webkit-user-select: none;
+  cursor: default;
+
+  // Cover the whole window
+  min-height: 100%;
+
+  // Make sure this matches the native window background color that you pass to
+  // electron.BrowserWindow({...}), otherwise your app startup will look janky.
+  background: whitesmoke;
+  // background: ghostwhite;
+  // background: snow;
+
+  // Smoother startup
+  animation: fadein 0.5s;
+
+  // Psuedo-titlebar. See below:
+  // https://github.com/electron/electron/blob/master/docs/api/frameless-window.md#draggable-region
+  &:after {
+    -webkit-app-region: drag;
+
+    content: '';
+    z-index: 30;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 30px;
+  }
+}
+
+body {
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  letter-spacing: 3px;
+  font-weight: 100;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+input {
+  font-family: 'Roboto', sans-serif;
+  font-size: inherit;
+
+  &:focus {
+    outline: 0px;
+  }
+}
+
+button {
+  background-color: salmon;
+  border: 0px;
+  padding: 10px 40px;
+  font-family: 'Roboto', sans-serif;
+  color: white;
+  transition: background-color 150ms ease-in-out;
+
+  &:focus {
+    outline: 0;
+  }
+
+  &:disabled {
+    background-color: lavender;
+    cursor: not-allowed;
+  }
+}

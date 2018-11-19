@@ -1,0 +1,55 @@
+div#update-revenue {
+  padding: 20px;
+
+  h2 {
+    font-weight: 200;
+    font-variant: small-caps;
+  }
+
+  section {
+    margin-bottom: 20px;
+  }
+
+  section.buttons {
+    display: flex;
+  }
+
+  button[type="submit"] {
+    flex-basis: 75%;
+    margin-right: 5px;
+  }
+
+  .loading {
+    z-index: 10;
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 0; right: 0;
+    display: flex;
+    justify-content: center;
+    background-color: rgba( black, 0.15 );
+  }
+
+  .anticon-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    font-size: 3em;
+  }
+
+  .ant-form-item {
+    margin-bottom: 5px;
+  }
+
+  .ant-form-item-control-wrapper {
+    height: 50px;
+  }
+
+  .ant-form-explain {
+    font-size: .85em;
+  }
+
+  .ant-form-item-label {
+    padding-bottom: 0;
+  }
+}

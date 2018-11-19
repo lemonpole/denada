@@ -1,0 +1,17 @@
+{
+  "presets": [
+    [ "env", {
+      "targets": {
+        "node": "current"
+      }
+    }],
+    "stage-0",
+    "camo"
+  ],
+  "plugins": [
+    "transform-flow-strip-types",
+    "transform-es2015-modules-commonjs",
+    "syntax-dynamic-import",
+    "dynamic-import-node"
+  ]
+}

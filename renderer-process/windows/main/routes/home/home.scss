@@ -1,0 +1,144 @@
+div#home {
+  padding: 20px;
+
+  // specify height to remove jarring transition
+  // between skeleton and when data finally loads
+  h1 {
+    height: 65px;
+  }
+
+  h1 > small {
+    display: block;
+    font-variant: small-caps;
+    font-size: 50%;
+  }
+}
+
+div#home section.overview {
+  display: flex;
+  justify-content: space-between;
+
+  & > div {
+    flex-basis: 33%;
+    max-width: 33%;
+  }
+
+  // also to reduce jarring transition between
+  // skeleton and when data is done loading
+  .ant-card-body {
+    min-height: 130px;
+  }
+
+  div.actions {
+    display: flex;
+    flex-direction: column;
+
+    i {
+      margin-right: 20px;
+      font-size: 2em;
+      opacity: 0.2;
+    }
+
+    .ant-card {
+      display: flex;
+      justify-content: center;
+      flex-grow: 1;
+      cursor: pointer;
+    }
+
+    .ant-card + .ant-card {
+      margin-top: 5px;
+    }
+
+    .ant-card-body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      padding: 0;
+
+      &:hover > i {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+div#home section.details {
+  margin-top: 20px;
+
+  .ant-card + .ant-card {
+    margin-top: 5px;
+  }
+
+  .ant-card-body {
+    display: flex;
+    height: 150px;
+    align-items: center;
+  }
+
+  div.info {
+    flex-basis: 12%;
+    padding: 5px 10px;
+  }
+
+  div.disabled {
+    opacity: 0.2;
+  }
+
+  div.date {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: aliceblue;
+    padding: 10px 0;
+    text-align: center;
+
+    & > p {
+      margin: 0;
+      padding: 0;
+      line-height: 1em;
+    }
+
+    & > p:last-child {
+      font-size: 2em;
+    }
+  }
+
+  div.profit {
+    flex-grow: 1;
+
+    &.new {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      cursor: pointer;
+
+      &:hover {
+        opacity: 1;
+      }
+
+      i {
+        margin-right: 5px;
+        font-size: 1.5em;
+      }
+    }
+
+    & > div {
+      display: flex;
+      justify-content: space-between;
+      width: 75%;
+    }
+
+    pre, p {
+      margin-bottom: 0px;
+    }
+  }
+
+  div.total {
+    border-left: 1px solid slategray;
+    padding-left: 34px;
+    font-size: 2em;
+  }
+}

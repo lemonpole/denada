@@ -1,0 +1,57 @@
+@import url( 'https://fonts.googleapis.com/css?family=Roboto:100,400,900' );
+
+
+#root {
+  // Disable text selection, or your app will feel like a web page
+  -webkit-user-select: none;
+  cursor: default;
+
+  // Cover the whole window
+  min-height: 100%;
+
+  // Make sure this matches the native window background color that you pass to
+  // electron.BrowserWindow({...}), otherwise your app startup will look janky.
+  background: whitesmoke;
+  // background: ghostwhite;
+  // background: snow;
+}
+
+body {
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  letter-spacing: 3px;
+  font-weight: 100;
+}
+
+input {
+  font-family: 'Roboto', sans-serif;
+  font-size: inherit;
+
+  &:focus {
+    outline: 0px;
+  }
+}
+
+button {
+  background-color: salmon;
+  border: 0px;
+  padding: 10px 40px;
+  font-family: 'Roboto', sans-serif;
+  color: white;
+  transition: background-color 150ms ease-in-out;
+
+  &:focus {
+    outline: 0;
+  }
+
+  &:disabled {
+    background-color: lavender;
+    cursor: not-allowed;
+  }
+}
