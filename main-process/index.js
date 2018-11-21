@@ -2,7 +2,7 @@
 import { app } from 'electron';
 import moment from 'moment';
 import ipc from './ipc';
-import { connect } from '../database';
+import connect from '../database';
 import { MainWindow, UpdateRevenueWindow } from './window-handlers';
 import WindowManager from './lib/window-manager';
 
@@ -16,20 +16,19 @@ moment.updateLocale( 'en', {
 });
 moment.locale( 'en' );
 
+function main( db ) {
+  ipc();
+  MainWindow( db );
+  UpdateRevenueWindow( db );
+}
 
 export default () => {
-  // connect to the database
-  connect().then( ( db: Object ) => {
-    console.log( db );
-  });
-
   // This method will be called when Electron has finished
   // initialization and is ready to create browser windows.
   // Some APIs can only be used after this event occurs.
   app.on( 'ready', () => {
-    ipc();
-    MainWindow();
-    UpdateRevenueWindow();
+    // connect to the database
+    connect().then( main );
   });
 
   // Quit when all windows are closed.
