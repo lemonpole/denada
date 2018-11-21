@@ -6,13 +6,14 @@ import Datastore from 'nedb';
 
 let database;
 
-export default function connect() {
-  // $FlowSkip
-  return new Promise( ( resolve, reject ) => {
-    database = new Datastore({
-      filename: path.join( app.getPath( 'userData' ), 'denada.db' ),
-      autoload: true,
-      onload: () => resolve( database )
-    });
+function promiseHandler( resolve: Function, reject: Function ): void {
+  database = new Datastore({
+    filename: path.join( app.getPath( 'userData' ), 'denada.db' ),
+    autoload: true,
+    onload: () => resolve( database )
   });
+}
+
+export default function connect(): Promise<any> {
+  return new Promise( promiseHandler );
 }
