@@ -8,7 +8,8 @@
   "scripts": {
     "build": "electron-builder",
     "build:dry-run": "electron-builder --dir",
-    "build:renderer": "cross-env NODE_ENV=production node -r babel-register ./webpack/compiler.js",
+    "build:electron": "cross-env NODE_ENV=production node -r babel-register ./webpack/compiler.js --electron",
+    "build:renderer": "cross-env NODE_ENV=production node -r babel-register ./webpack/compiler.js --renderer",
     "flow": "flow",
     "flow-typed:install": "flow-typed install --overwrite",
     "postinstall": "electron-builder install-app-deps",

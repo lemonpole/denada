@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/* eslint-disable no-console, dot-notation */
 import express from 'express';
 import minimist from 'minimist';
 import webpack from 'webpack';
@@ -6,20 +6,29 @@ import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import { spawn } from 'child_process';
 
-import webpackConfigShared from './webpack-shared';
+import sharedconfig from './webpack-shared';
 import devconfig from './webpack-dev';
 import prodconfig from './webpack-prod';
+import electronconfig from './webpack-electron';
 
 
 const IS_PROD = process.env.NODE_ENV === 'production';
-const COMPILER = webpack( IS_PROD ? prodconfig : devconfig );
 const PORT = process.env.PORT || 3000;
 const ARGS = minimist( process.argv.slice( 2 ) );
+
+// figure out config to use
+let config = IS_PROD ? prodconfig : devconfig;
+if( IS_PROD && ARGS[ 'electron' ] ) {
+  config = electronconfig;
+}
+
+// and then load into webpack
+const COMPILER = webpack( config );
 
 function handleProduction() {
   COMPILER.run( ( err, stats ) => {
     console.log(
-      stats.toJson( webpackConfigShared.compilerConfig )
+      stats.toJson( sharedconfig.compilerConfig )
     );
   });
 }
@@ -30,7 +39,7 @@ function handleDev() {
   const wdm = webpackDevMiddleware( COMPILER, {
     quiet: false,
     publicPath: devconfig.output.publicPath,
-    stats: webpackConfigShared.compilerConfig
+    stats: sharedconfig.compilerConfig
   });
 
   app.use( wdm );

@@ -8,7 +8,7 @@ import webpackConfigShared from './webpack-shared.js';
 import webpackConfigResolve from './webpack-resolve.js';
 
 export default {
-  devtool: 'source-map',
+  mode: 'production',
   resolve: webpackConfigResolve,
   entry: [
     path.join( __dirname, '../main' )
@@ -22,8 +22,9 @@ export default {
       webpackConfigShared.loaders.js,
       webpackConfigShared.loaders.eslint
     ]
-  }
+  },
   plugins: [
+    // @TODO
   ],
 
   // Set target to Electron specific node.js env
