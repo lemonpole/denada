@@ -2,7 +2,7 @@
   "name": "denada",
   "version": "1.0.0",
   "description": "A simple accounting app for Justin's lazy ass.",
-  "main": "main.js",
+  "main": "main.bundle.js",
   "author": "Steve Rivera",
   "license": "UNLICENSED",
   "scripts": {
@@ -10,6 +10,7 @@
     "build:dry-run": "electron-builder --dir",
     "build:electron": "cross-env NODE_ENV=production node -r babel-register ./webpack/compiler.js --electron",
     "build:renderer": "cross-env NODE_ENV=production node -r babel-register ./webpack/compiler.js --renderer",
+    "lint": "eslint --ext .js,.jsx main-process renderer-process",
     "flow": "flow",
     "flow-typed:install": "flow-typed install --overwrite",
     "postinstall": "electron-builder install-app-deps",
