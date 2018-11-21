@@ -15,6 +15,3 @@ $ npm install
 $ npm run start:dev
 ```
 
-## A note on camo
-Camo has an [active issue](https://github.com/scottwrobinson/camo/issues/111#issuecomment-374698154) open that is not honoring optional installations, Until that is fixed we have to install mongodb as well...
-

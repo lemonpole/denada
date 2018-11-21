@@ -3,28 +3,33 @@ import path from 'path';
 import { ipcMain, dialog } from 'electron';
 import moment from 'moment';
 
-import { models } from '../../database';
 import WindowManager from '../lib/window-manager';
 
 
-/**
- * IPC Handlers
- */
+// module-level variables
+let db;
+
+// ipc handlers
 function generateWeek( date: Date | void ) {
   const monday = moment( date ).startOf( 'isoweek' );
   const promises = [];
 
   moment.weekdaysShort().forEach( ( dayofweek: string, i: number ) => {
     const now = moment( monday ).add( i, 'days' );
-    const revenueObj = models.Revenue.create({
-      week: now.week(),
-      month: now.month() + 1, // 0-indexed...
-      year: now.year(),
-      long_date: now.format(),
-      adjustments: []
+    const revenueObj = new Promise( ( resolve, reject ) => {
+      db.insert({
+        week: now.week(),
+        month: now.month() + 1, // 0-indexed...
+        year: now.year(),
+        long_date: now.format(),
+        paper_orders: 0.00,
+        deliveries: 0.00,
+        credit: 0.00,
+        adjustments: []
+      }, ( err, doc ) => resolve( doc ) );
     });
 
-    promises.push( revenueObj.save() );
+    promises.push( revenueObj );
   });
 
   return Promise.all( promises );
@@ -32,10 +37,15 @@ function generateWeek( date: Date | void ) {
 
 async function loadDataHandler( evt: Object, date: Date ) {
   // sort by the date so Monday is always first...
-  const res = await models.Revenue.find(
-    { week: moment( date ).week() },
-    { sort: 'long_date' }
-  );
+  const res = await new Promise( ( resolve, reject ) => {
+    db.find({
+      week: moment( date ).week()
+    }).sort({
+      long_date: 1
+    }).exec(
+      ( err, docs ) => resolve( docs )
+    );
+  });
 
   // if we got a hit return that and bail
   if( res.length > 0 ) {
@@ -44,7 +54,11 @@ async function loadDataHandler( evt: Object, date: Date ) {
   }
 
   // if no hit, figure out if the database is fresh
-  const isFresh = await models.Revenue.count() === 0;
+  const isFresh = await new Promise( ( resolve, reject ) => {
+    db.count({}, ( err, count: number ) => {
+      resolve( count === 0 );
+    });
+  });
 
   if( !isFresh ) {
     evt.sender.send( '/windows/main/no-data', date );
@@ -57,7 +71,7 @@ async function loadDataHandler( evt: Object, date: Date ) {
 
   // since the data coming back was asynchronously saved
   // it's out of order. sort it by date again
-  nextweek.sort( ( a: models.Revenue, b: models.Revenue ) => (
+  nextweek.sort( ( a: Object, b: Object ) => (
     new Date( a.long_date ) - new Date( b.long_date )
   ) );
 
@@ -65,9 +79,12 @@ async function loadDataHandler( evt: Object, date: Date ) {
 }
 
 async function checkWeekHandler( evt: Object, date: Date ) {
-  const res = await models.Revenue.find(
-    { week: moment( date ).week() }
-  );
+  const res = await new Promise( ( resolve, reject ) => {
+    db.find(
+      { week: moment( date ).week() },
+      ( err, docs ) => resolve( docs )
+    );
+  });
 
   evt.sender.send( '/windows/main/checked-week', res.length > 0, date );
 }
@@ -92,7 +109,9 @@ async function createweekDialogHandler( evt: Object, date: Date ) {
   }
 }
 
-export default () => {
+export default ( _db: Object ) => {
+  db = _db;
+
   const PORT = process.env.PORT || 3000;
   const CONFIG = {
     url: `http://localhost:${PORT}/windows/main/index.html`,

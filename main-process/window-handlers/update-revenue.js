@@ -1,10 +1,10 @@
 // @flow
 import { ipcMain } from 'electron';
 import WindowManager from '../lib/window-manager';
-import { models } from '../../database';
 
 
 // module-level variables
+let db;
 let revenueObj;
 
 // ipc handlers
@@ -52,17 +52,23 @@ function fetchRevenueHandler( evt: Object ) {
 }
 
 async function updateRevenueHandler( evt: Object, data: Object ) {
-  revenueObj = await models.Revenue.findOneAndUpdate(
-    { _id: data._id },
-    data
-  );
+  revenueObj = await new Promise( ( resolve, reject ) => {
+    db.update(
+      { _id: data._id },
+      data,
+      {},
+      ( err, numReplace: number ) => resolve( data )
+    );
+  });
 
   // let the update-revenue window know that we're done updating
   // the revenue doc
   evt.sender.send( '/windows/update-revenue/updated' );
 }
 
-export default () => {
+export default ( _db: Object ) => {
+  db = _db;
+
   ipcMain.on( '/windows/update-revenue/open', openWindowHandler );
   ipcMain.on( '/windows/update-revenue/close', closeWindowHandler );
   ipcMain.on( '/windows/update-revenue/load-data', fetchRevenueHandler );

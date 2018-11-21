@@ -1,21 +1,18 @@
 // @flow
 import path from 'path';
 import { app } from 'electron';
-import Camo from 'camo';
-import Adjustment from './adjustment';
-import Revenue from './revenue';
+import Datastore from 'nedb';
 
 
-// const DB_URI = 'nedb://memory';
-const DB_URI = `nedb://${path.join( app.getPath( 'userData' ), 'denada' )}`;
 let database;
 
-export async function connect() {
-  database = database || await Camo.connect( DB_URI );
-  return Promise.resolve( database );
+export default function connect() {
+  // $FlowSkip
+  return new Promise( ( resolve, reject ) => {
+    database = new Datastore({
+      filename: path.join( app.getPath( 'userData' ), 'denada.db' ),
+      autoload: true,
+      onload: () => resolve( database )
+    });
+  });
 }
-
-export const models = {
-  Adjustment,
-  Revenue
-};

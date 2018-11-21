@@ -5,8 +5,7 @@
         "node": "current"
       }
     }],
-    "stage-0",
-    "camo"
+    "stage-0"
   ],
   "plugins": [
     "transform-flow-strip-types",
