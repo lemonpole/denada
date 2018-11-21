@@ -14,7 +14,7 @@ export default {
     path.join( __dirname, '../main' )
   ],
   output: {
-    path: path.join( __dirname, '../dist' ),
+    path: path.join( __dirname, '../' ),
     filename: 'main.bundle.js'
   },
   module: {

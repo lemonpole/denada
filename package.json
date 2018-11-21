@@ -15,7 +15,7 @@
     "postinstall": "electron-builder install-app-deps",
     "start:dev": "npm run start:dev-server -- --dev-electron",
     "start:dev:console": "npm run start:dev-server -- --dev-electron --dev-console",
-    "start:dev-electron": "cross-env NODE_ENV=development electron -r babel-register -r babel-polyfill ./main",
+    "start:dev-electron": "npm run build:electron && cross-env NODE_ENV=development electron ./main.bundle.js",
     "start:dev-server": "cross-env NODE_ENV=development node -r babel-register ./webpack/compiler.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -6,3 +6,4 @@ node_modules/
 *.log
 *.mwb
 *.swp
+main.bundle.js
