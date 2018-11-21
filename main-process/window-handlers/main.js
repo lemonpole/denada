@@ -3,14 +3,13 @@ import path from 'path';
 import { ipcMain, dialog } from 'electron';
 import moment from 'moment';
 
+import Database from '../lib/database';
 import WindowManager from '../lib/window-manager';
 
 
-// module-level variables
-let db;
-
 // ipc handlers
 function generateWeek( date: Date | void ) {
+  const db = Database.getClient();
   const monday = moment( date ).startOf( 'isoweek' );
   const promises = [];
 
@@ -37,6 +36,7 @@ function generateWeek( date: Date | void ) {
 
 async function loadDataHandler( evt: Object, date: Date ) {
   // sort by the date so Monday is always first...
+  const db = Database.getClient();
   const res = await new Promise( ( resolve, reject ) => {
     db.find({
       week: moment( date ).week()
@@ -79,6 +79,7 @@ async function loadDataHandler( evt: Object, date: Date ) {
 }
 
 async function checkWeekHandler( evt: Object, date: Date ) {
+  const db = Database.getClient();
   const res = await new Promise( ( resolve, reject ) => {
     db.find(
       { week: moment( date ).week() },
@@ -109,9 +110,7 @@ async function createweekDialogHandler( evt: Object, date: Date ) {
   }
 }
 
-export default ( _db: Object ) => {
-  db = _db;
-
+export default () => {
   const PORT = process.env.PORT || 3000;
   const CONFIG = {
     url: `http://localhost:${PORT}/windows/main/index.html`,

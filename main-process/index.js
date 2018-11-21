@@ -2,8 +2,8 @@
 import { app } from 'electron';
 import moment from 'moment';
 import ipc from './ipc';
-import connect from '../database';
 import { MainWindow, UpdateRevenueWindow } from './window-handlers';
+import Database from './lib/database';
 import WindowManager from './lib/window-manager';
 
 
@@ -16,19 +16,19 @@ moment.updateLocale( 'en', {
 });
 moment.locale( 'en' );
 
-function main( db ) {
-  ipc();
-  MainWindow( db );
-  UpdateRevenueWindow( db );
-}
-
 export default () => {
   // This method will be called when Electron has finished
   // initialization and is ready to create browser windows.
   // Some APIs can only be used after this event occurs.
   app.on( 'ready', () => {
-    // connect to the database
-    connect().then( main );
+    // connect to the database first
+    Database.connect().then( () => {
+      // once connected we can load the application's
+      // generic ipc handlers and window handlers
+      ipc();
+      MainWindow();
+      UpdateRevenueWindow();
+    });
   });
 
   // Quit when all windows are closed.
@@ -43,7 +43,6 @@ export default () => {
   app.on( 'activate', () => {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
-    // @TODO: not working...
     const windows = WindowManager.getWindows();
 
     if( Object.keys( windows ) === 0 ) {
