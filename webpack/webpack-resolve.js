@@ -10,6 +10,7 @@ const path = require( 'path' );
 module.exports = {
   extensions: [ '.js', '.jsx' ],
   alias: {
+    build: path.resolve( __dirname, '../build' ),
     main: path.resolve( __dirname, '../main-process' ),
     renderer: path.resolve( __dirname, '../renderer-process' )
   },

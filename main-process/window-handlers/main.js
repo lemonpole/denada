@@ -1,10 +1,10 @@
 // @flow
-import path from 'path';
-import { ipcMain, dialog } from 'electron';
+import { ipcMain, dialog, nativeImage } from 'electron';
 import moment from 'moment';
 
 import Database from 'main/lib/database';
 import WindowManager from 'main/lib/window-manager';
+import icondataurl from 'build/background.png';
 
 
 // ipc handlers
@@ -97,7 +97,7 @@ async function createweekDialogHandler( evt: Object, date: Date ) {
     buttons: [ 'Cancel', 'Create' ],
     message: 'Week not found.',
     detail: 'Create it?',
-    icon: path.join( __dirname, '../../build/background.png' )
+    icon: nativeImage.createFromDataURL( icondataurl )
   });
 
   if( answer > 0 ) {

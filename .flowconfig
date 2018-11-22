@@ -32,6 +32,7 @@ esproposal.export_star_as=enable
 module.name_mapper='.*\(.css\)' -> 'empty/object'
 module.name_mapper='.*\(.scss\)' -> 'empty/object'
 module.name_mapper='.*\(.gif\)' -> 'empty/object'
+module.name_mapper='^build' -> '<PROJECT_ROOT>/build'
 module.name_mapper='^main' -> '<PROJECT_ROOT>/main-process'
 module.name_mapper='^renderer' -> '<PROJECT_ROOT>/renderer-process'
 module.system.node.resolve_dirname=node_modules
