@@ -3,8 +3,8 @@ import path from 'path';
 import { ipcMain, dialog } from 'electron';
 import moment from 'moment';
 
-import Database from '../lib/database';
-import WindowManager from '../lib/window-manager';
+import Database from 'main/lib/database';
+import WindowManager from 'main/lib/window-manager';
 
 
 // ipc handlers

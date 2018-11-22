@@ -1,7 +1,7 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
-import Routes from 'windows/main/routes';
+import Routes from 'renderer/windows/main/routes';
 
 const App = () => (
   <MemoryRouter>
