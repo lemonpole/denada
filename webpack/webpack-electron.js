@@ -20,7 +20,8 @@ export default {
   module: {
     rules: [
       webpackConfigShared.loaders.js,
-      webpackConfigShared.loaders.eslint
+      webpackConfigShared.loaders.eslint,
+      webpackConfigShared.loaders.images
     ]
   },
   plugins: [
