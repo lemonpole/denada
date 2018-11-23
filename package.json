@@ -24,7 +24,14 @@
     "appId": "com.electron.denada",
     "mac": {
       "category": "public.app.category.finance"
-    }
+    },
+    "directories": {
+      "app": "build",
+      "buildResources": "resources"
+    },
+    "files": [
+      "../build/windows/**/*"
+    ]
   },
   "dependencies": {
     "antd": "3.10.1",

@@ -18,7 +18,7 @@ export default {
   },
   output: {
     filename: '[name]/[name].js',
-    path: path.join( ROOT, 'dist/windows' )
+    path: path.join( ROOT, 'build/windows' )
   },
   module: {
     rules: [
@@ -33,7 +33,7 @@ export default {
     ]
   },
   plugins: [
-    new CleanWebpackPlugin([ 'dist' ], {
+    new CleanWebpackPlugin([ 'build' ], {
       root: ROOT
     }),
     new HtmlWebpackPlugin({
