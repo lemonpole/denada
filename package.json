@@ -6,19 +6,17 @@
   "author": "Steve Rivera",
   "license": "UNLICENSED",
   "scripts": {
-    "build": "electron-builder",
-    "build:dry-run": "electron-builder --dir",
+    "build": "npm run build:renderer && npm run build:electron && electron-builder",
+    "build:dry-run": "npm run build:renderer && npm run build:electron && electron-builder --dir",
     "build:electron": "cross-env NODE_ENV=production node -r babel-register ./webpack/compiler.js --electron",
     "build:renderer": "cross-env NODE_ENV=production node -r babel-register ./webpack/compiler.js --renderer",
     "lint": "eslint --ext .js,.jsx main-process renderer-process",
     "flow": "flow",
     "flow-typed:install": "flow-typed install --overwrite",
-    "postinstall": "electron-builder install-app-deps",
     "start:dev": "npm run start:dev-server -- --dev-electron",
     "start:dev:console": "npm run start:dev-server -- --dev-electron --dev-console",
     "start:dev-electron": "npm run build:electron && cross-env NODE_ENV=development electron ./main.bundle.js",
-    "start:dev-server": "cross-env NODE_ENV=development node -r babel-register ./webpack/compiler.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start:dev-server": "cross-env NODE_ENV=development node -r babel-register ./webpack/compiler.js"
   },
   "build": {
     "appId": "com.electron.denada",
@@ -26,11 +24,11 @@
       "category": "public.app.category.finance"
     },
     "directories": {
-      "app": "build",
       "buildResources": "resources"
     },
     "files": [
-      "../build/windows/**/*"
+      "main.bundle.js",
+      "build/windows/**/*"
     ]
   },
   "dependencies": {
