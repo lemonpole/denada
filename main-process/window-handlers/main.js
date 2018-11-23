@@ -1,11 +1,27 @@
 // @flow
+import path from 'path';
 import { ipcMain, dialog, nativeImage } from 'electron';
 import moment from 'moment';
+import is from 'electron-is';
 
 import Database from 'main/lib/database';
 import WindowManager from 'main/lib/window-manager';
 import icondataurl from 'build/background.png';
 
+
+// module-level variables and constants
+const PORT = process.env.PORT || 3000;
+const CONFIG = {
+  url: is.production()
+    ? `file://${path.join( __dirname, 'windows/main/index.html' )}`
+    : `http://localhost:${PORT}/windows/main/index.html`,
+  opts: {
+    backgroundColor: '#f5f5f5', // "whitesmoke"
+    minWidth: 800,
+    minHeight: 600,
+    maximizable: false
+  }
+};
 
 // ipc handlers
 function generateWeek( date: Date | void ) {
@@ -111,17 +127,6 @@ async function createweekDialogHandler( evt: Object, date: Date ) {
 }
 
 export default () => {
-  const PORT = process.env.PORT || 3000;
-  const CONFIG = {
-    url: `http://localhost:${PORT}/windows/main/index.html`,
-    opts: {
-      backgroundColor: '#f5f5f5', // "whitesmoke"
-      minWidth: 800,
-      minHeight: 600,
-      maximizable: false
-    }
-  };
-
   WindowManager.createWindow( '/windows/main', CONFIG.url, CONFIG.opts );
 
   // ipc listeners

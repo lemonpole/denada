@@ -1,5 +1,7 @@
 // @flow
+import path from 'path';
 import { ipcMain } from 'electron';
+import is from 'electron-is';
 import Database from 'main/lib/database';
 import WindowManager from 'main/lib/window-manager';
 
@@ -13,9 +15,10 @@ function openWindowHandler( evt: Object, data: Object ) {
   const WIDTH = 360;
   const HEIGHT = 480;
   const PARENT = WindowManager.getWindowById( '/windows/main' );
-
   const CONFIG = {
-    url: `http://localhost:${PORT}/windows/update-revenue/index.html`,
+    url: is.production()
+      ? `file://${path.join( __dirname, 'windows/update-revenue/index.html' )}`
+      : `http://localhost:${PORT}/windows/update-revenue/index.html`,
     opts: {
       parent: PARENT.handle,
       modal: true,

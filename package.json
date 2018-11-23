@@ -29,6 +29,7 @@
   "dependencies": {
     "antd": "3.10.1",
     "chart.js": "2.7.3",
+    "electron-is": "3.0.0",
     "empty": "0.10.1",
     "moment": "2.22.2",
     "nedb": "1.8.0",
