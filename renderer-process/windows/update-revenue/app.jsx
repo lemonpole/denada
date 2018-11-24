@@ -43,7 +43,7 @@ class App extends Component<{}, State> {
       errorMsg: null,
       pristine: true
     },
-    credit: {
+    expenses: {
       value: 0.00,
       validateStatus: 'success',
       errorMsg: null,
@@ -91,7 +91,7 @@ class App extends Component<{}, State> {
     evt.preventDefault();
     this.revenueObj.paper_orders = this.state.paperOrders.value;
     this.revenueObj.deliveries = this.state.deliveries.value;
-    this.revenueObj.credit = this.state.credit.value;
+    this.revenueObj.expenses = this.state.expenses.value;
 
     ipcRenderer.send( '/windows/update-revenue/update', this.revenueObj );
     this.setState({ saving: true });
@@ -106,7 +106,7 @@ class App extends Component<{}, State> {
 
     // loop through the fields and validate them
     // if the field is pristine consider it invalid as well
-    [ 'paperOrders', 'deliveries', 'credit' ].forEach( ( fieldstr: string ) => {
+    [ 'paperOrders', 'deliveries', 'expenses' ].forEach( ( fieldstr: string ) => {
       const field = this.state[ fieldstr ];
       invalid = field.validateStatus === 'error' || field.pristine;
     });
@@ -115,7 +115,7 @@ class App extends Component<{}, State> {
   }
 
   render() {
-    const { paperOrders, deliveries, credit } = this.state;
+    const { paperOrders, deliveries, expenses } = this.state;
 
     return (
       <div id="update-revenue">
@@ -126,7 +126,7 @@ class App extends Component<{}, State> {
         )}
         <Form onSubmit={this.handleSubmit}>
           <section>
-            <h2>{'cash'}</h2>
+            <h2>{'income'}</h2>
             <FormItem
               label={'Paper Orders'}
               validateStatus={paperOrders.validateStatus}
@@ -155,14 +155,14 @@ class App extends Component<{}, State> {
           </section>
 
           <section>
-            <h2>{'credit'}</h2>
+            <h2>{'expenses'}</h2>
             <FormItem
-              label={'Credit Cards'}
-              validateStatus={credit.validateStatus}
-              help={credit.errorMsg || ''}
+              label={'Expenses'}
+              validateStatus={expenses.validateStatus}
+              help={expenses.errorMsg || ''}
             >
               <Input
-                id="credit"
+                id="expenses"
                 placeholder={'0.00'}
                 addonBefore={'$'}
                 onChange={this.handleInputChange}

@@ -35,19 +35,22 @@ class Home extends Component<{}, State> {
 
   totalize = (): Object => {
     let income = 0;
+    let deliveries = 0;
+    let paperOrders = 0;
     let expenses = 0; // @TODO
-    let cash = 0;
-    let credit = 0;
 
     this.state.revenues.forEach( ( item: Object ) => {
-      income += item.paper_orders + item.deliveries + item.credit;
+      income += item.paper_orders + item.deliveries;
+      paperOrders += item.paper_orders;
+      deliveries += item.deliveries;
       expenses += 0;
-      cash += item.paper_orders + item.deliveries;
-      credit += item.credit;
     });
 
     return {
-      income, expenses, cash, credit
+      income,
+      paperOrders,
+      deliveries,
+      expenses
     };
   }
 
@@ -136,7 +139,7 @@ class Home extends Component<{}, State> {
 
   renderDetails = ( item: Object ) => {
     const date = moment( item.long_date );
-    const cashTotal = item.paper_orders + item.deliveries;
+    const income = item.paper_orders + item.deliveries;
 
     let adjTotal = 0;
 
@@ -146,7 +149,7 @@ class Home extends Component<{}, State> {
         .reduce( ( total, amt ) => total + amt );
     }
 
-    const grandTotal = cashTotal + item.credit + adjTotal;
+    const grandTotal = income + adjTotal;
 
     return (
       <Card key={item._id}>
@@ -157,12 +160,12 @@ class Home extends Component<{}, State> {
         </div>
         <div className="profit info">
           <div>
-            <p>{'Cash'}</p>
-            <pre>{`$${cashTotal.toFixed( 2 )}`}</pre>
+            <p>{'Income'}</p>
+            <pre>{`$${income.toFixed( 2 )}`}</pre>
           </div>
           <div>
-            <p>{'Credit'}</p>
-            <pre>{`$${item.credit.toFixed( 2 )}`}</pre>
+            <p>{'Deliveries'}</p>
+            <pre>{`$${item.deliveries.toFixed( 2 )}`}</pre>
           </div>
           <div>
             <p>{'Expenses/Adjustments'}</p>
@@ -197,11 +200,7 @@ class Home extends Component<{}, State> {
   render() {
     // totalize income and expenses
     // totalize paper orders and deliveries -vs- credit
-    const {
-      income, expenses,
-      cash, credit
-    } = this.totalize();
-
+    const { income, paperOrders, deliveries, expenses } = this.totalize();
     const weekof = moment( this.state.activedate ).startOf( 'isoWeek' );
 
     return (
@@ -259,7 +258,7 @@ class Home extends Component<{}, State> {
               />
             )}
           </Card>
-          <Card title={'Cash and Credit'}>
+          <Card title={'Paper Orders and Deliveries'}>
             {this.state.loading ? (
               <Skeleton
                 active
@@ -270,9 +269,9 @@ class Home extends Component<{}, State> {
             ) : (
               <Pie
                 data={{
-                  labels: [ 'Cash', 'Credit' ],
+                  labels: [ 'Paper Orders', 'Deliveries' ],
                   datasets: [ {
-                    data: [ cash, credit ],
+                    data: [ paperOrders, deliveries ],
                     backgroundColor: [
                       'darkseagreen',
                       'darkcyan'
