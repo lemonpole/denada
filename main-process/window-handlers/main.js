@@ -6,14 +6,14 @@ import is from 'electron-is';
 
 import Database from 'main/lib/database';
 import WindowManager from 'main/lib/window-manager';
-import icondataurl from 'build/background.png';
+import icondataurl from 'resources/background.png';
 
 
 // module-level variables and constants
 const PORT = process.env.PORT || 3000;
 const CONFIG = {
   url: is.production()
-    ? `file://${path.join( __dirname, 'windows/main/index.html' )}`
+    ? `file://${path.join( __dirname, 'dist/renderer/windows/main/index.html' )}`
     : `http://localhost:${PORT}/windows/main/index.html`,
   opts: {
     backgroundColor: '#f5f5f5', // "whitesmoke"

@@ -18,7 +18,7 @@ export default {
   },
   output: {
     filename: '[name]/[name].js',
-    path: path.join( ROOT, 'dist/windows' )
+    path: path.join( ROOT, 'dist/renderer/windows' )
   },
   module: {
     rules: [

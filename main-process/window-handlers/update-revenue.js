@@ -17,7 +17,7 @@ function openWindowHandler( evt: Object, data: Object ) {
   const PARENT = WindowManager.getWindowById( '/windows/main' );
   const CONFIG = {
     url: is.production()
-      ? `file://${path.join( __dirname, 'windows/update-revenue/index.html' )}`
+      ? `file://${path.join( __dirname, 'dist/renderer/windows/update-revenue/index.html' )}`
       : `http://localhost:${PORT}/windows/update-revenue/index.html`,
     opts: {
       parent: PARENT.handle,
