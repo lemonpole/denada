@@ -163,9 +163,15 @@ class Home extends Component<{}, State> {
             <p>{'Income'}</p>
             <pre>{`$${income.toFixed( 2 )}`}</pre>
           </div>
-          <div>
-            <p>{'Deliveries'}</p>
-            <pre>{`$${item.deliveries.toFixed( 2 )}`}</pre>
+          <div className="subitem">
+            <div>
+              <p>{'Paper Orders'}</p>
+              <pre>{`$${item.paper_orders.toFixed( 2 )}`}</pre>
+            </div>
+            <div>
+              <p>{'Deliveries'}</p>
+              <pre>{`$${item.deliveries.toFixed( 2 )}`}</pre>
+            </div>
           </div>
           <div>
             <p>{'Expenses'}</p>

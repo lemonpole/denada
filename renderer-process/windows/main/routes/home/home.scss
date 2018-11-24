@@ -125,10 +125,23 @@ div#home section.details {
       }
     }
 
-    & > div {
+    div {
+      width: 75%;
+    }
+
+    div:not(.subitem) {
       display: flex;
       justify-content: space-between;
-      width: 75%;
+    }
+
+    div.subitem {
+      padding-left: 20px;
+    }
+
+    div.subitem > div {
+      width: 100%;
+      font-style: italic;
+      font-size: .9em;
     }
 
     pre, p {
