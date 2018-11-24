@@ -28,7 +28,7 @@
     },
     "files": [
       "main.bundle.js",
-      "dist/windows/**/*"
+      "dist/renderer/windows/**/*"
     ]
   },
   "dependencies": {
