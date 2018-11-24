@@ -143,8 +143,8 @@ class Home extends Component<{}, State> {
 
     let adjTotal = 0;
 
-    if( item.adjustments.length > 0 ) {
-      adjTotal = item.adjustments
+    if( item.expenses.length > 0 ) {
+      adjTotal = item.expenses
         .map( adj => adj.amt )
         .reduce( ( total, amt ) => total + amt );
     }
@@ -168,7 +168,7 @@ class Home extends Component<{}, State> {
             <pre>{`$${item.deliveries.toFixed( 2 )}`}</pre>
           </div>
           <div>
-            <p>{'Expenses/Adjustments'}</p>
+            <p>{'Expenses'}</p>
             <pre>{`$${adjTotal.toFixed( 2 )}`}</pre>
           </div>
         </div>

@@ -39,8 +39,7 @@ function generateWeek( date: Date | void ) {
         long_date: now.format(),
         paper_orders: 0.00,
         deliveries: 0.00,
-        credit: 0.00,
-        adjustments: []
+        expenses: []
       }, ( err, doc ) => resolve( doc ) );
     });
 
