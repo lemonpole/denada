@@ -1,5 +1,5 @@
-// flow-typed signature: 7fb26e1f61e2be6a653ebd7dc4e9b600
-// flow-typed version: e72db20c61/antd_v3.x.x/flow_>=v0.25.x
+// flow-typed signature: 680cf538b1052b56461a1396b25b8136
+// flow-typed version: f0bd032e5b/antd_v3.x.x/flow_>=v0.25.x
 
 declare module "antd" {
   import type { Node, Component } from "react";
@@ -323,6 +323,30 @@ declare module "antd" {
     static warning: typeof modalFn;
     static confirm: typeof modalFn;
   }
+
+  declare export type PaginationProps = {
+    current?: number,
+    defaultCurrent?: number,
+    defaultPageSize?: number,
+    hideOnSinglePage?: boolean,
+    itemRender?: (
+      page: number,
+      type: "page" | "prev" | "next",
+      originalElement: React$Node
+    ) => React$Node,
+    pageSize?: number,
+    pageSizeOptions?: string[],
+    showQuickJumper?: boolean,
+    showSizeChanger?: boolean,
+    showTotal?: (total: number, range: number[]) => React$Node,
+    simple?: boolean,
+    size?: string,
+    total?: number,
+    onChange?: (page: number, pageSize: number) => void,
+    onShowSizeChange?: (current: number, size: number) => void
+  };
+
+  declare export class Pagination extends React$Component<PaginationProps> {}
 
   declare export class Popconfirm extends React$Component<{}> {}
 
