@@ -215,7 +215,8 @@ class Home extends Component<{}, State> {
             ) : (
               <Line
                 data={{
-                  labels: [ 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun' ],
+                  // $FlowSkip
+                  labels: moment.weekdaysShort( true ),
                   datasets: [
                     {
                       label: 'Income',
