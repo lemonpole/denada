@@ -3,7 +3,7 @@ import React, { Component, Fragment } from 'react';
 import { ipcRenderer } from 'electron';
 import moment from 'moment';
 import { Card, Icon, Skeleton } from 'antd';
-import { Bar, Pie } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 
 import './home.scss';
 
@@ -31,27 +31,6 @@ class Home extends Component<{}, State> {
     ipcRenderer.on( '/windows/main/checked-week', this.handleCheckedWeek );
     ipcRenderer.on( '/windows/main/dialogs/creating-week', this.handleCreatingWeek );
     ipcRenderer.on( '/windows/main/dialogs/created-week', this.handleLoadedData );
-  }
-
-  totalize = (): Object => {
-    let income = 0;
-    let deliveries = 0;
-    let paperOrders = 0;
-    let expenses = 0; // @TODO
-
-    this.state.revenues.forEach( ( item: Object ) => {
-      income += item.paper_orders + item.deliveries;
-      paperOrders += item.paper_orders;
-      deliveries += item.deliveries;
-      expenses += 0;
-    });
-
-    return {
-      income,
-      paperOrders,
-      deliveries,
-      expenses
-    };
   }
 
   toCommas = ( num: number ): string => {
@@ -204,9 +183,6 @@ class Home extends Component<{}, State> {
   }
 
   render() {
-    // totalize income and expenses
-    // totalize paper orders and deliveries -vs- credit
-    const { income, paperOrders, deliveries, expenses } = this.totalize();
     const weekof = moment( this.state.activedate ).startOf( 'isoWeek' );
 
     return (
@@ -237,16 +213,23 @@ class Home extends Component<{}, State> {
                 paragraph={{ rows: 5 }}
               />
             ) : (
-              <Bar
+              <Line
                 data={{
-                  labels: [ 'Income', 'Expenses' ],
-                  datasets: [ {
-                    data: [ income, expenses ],
-                    backgroundColor: [
-                      'darksalmon',
-                      'brown'
-                    ]
-                  } ]
+                  labels: [ 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun' ],
+                  datasets: [
+                    {
+                      data: this.state.revenues.map( item => (
+                        item.paper_orders + item.deliveries
+                      ) ),
+                      borderColor: 'darksalmon'
+                    },
+                    {
+                      data: this.state.revenues.map( item => (
+                        item.deliveries
+                      ) ),
+                      borderColor: 'brown'
+                    }
+                  ]
                 }}
                 options={{
                   maintainAspectRatio: false,
@@ -260,32 +243,6 @@ class Home extends Component<{}, State> {
                       }
                     } ]
                   }
-                }}
-              />
-            )}
-          </Card>
-          <Card title={'Paper Orders and Deliveries'}>
-            {this.state.loading ? (
-              <Skeleton
-                active
-                loading
-                title={false}
-                paragraph={{ rows: 5 }}
-              />
-            ) : (
-              <Pie
-                data={{
-                  labels: [ 'Paper Orders', 'Deliveries' ],
-                  datasets: [ {
-                    data: [ paperOrders, deliveries ],
-                    backgroundColor: [
-                      'darkseagreen',
-                      'darkcyan'
-                    ]
-                  } ]
-                }}
-                options={{
-                  maintainAspectRatio: false
                 }}
               />
             )}
