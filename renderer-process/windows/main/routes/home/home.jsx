@@ -218,23 +218,25 @@ class Home extends Component<{}, State> {
                   labels: [ 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun' ],
                   datasets: [
                     {
+                      label: 'Income',
+                      borderColor: 'darksalmon',
                       data: this.state.revenues.map( item => (
                         item.paper_orders + item.deliveries
-                      ) ),
-                      borderColor: 'darksalmon'
+                      ) )
                     },
                     {
+                      label: 'Expenses',
+                      borderColor: 'brown',
                       data: this.state.revenues.map( item => (
-                        item.deliveries
-                      ) ),
-                      borderColor: 'brown'
+                        item.expenses
+                      ) )
                     }
                   ]
                 }}
                 options={{
                   maintainAspectRatio: false,
                   legend: {
-                    display: false
+                    display: true
                   },
                   scales: {
                     yAxes: [ {
