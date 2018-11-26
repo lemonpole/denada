@@ -1,10 +1,12 @@
 // @flow
 import { app } from 'electron';
 import moment from 'moment';
-import ipc from './ipc';
-import { MainWindow, UpdateRevenueWindow } from './window-handlers';
-import Database from './lib/database';
-import WindowManager from './lib/window-manager';
+
+import ipc from 'main/ipc';
+import { MainWindow, UpdateRevenueWindow } from 'main/window-handlers';
+import Database from 'main/lib/database';
+import WindowManager from 'main/lib/window-manager';
+import DefaultMenu from 'main/lib/default-menu';
 
 
 // Override the default moment locale and force it to
@@ -21,6 +23,9 @@ export default () => {
   // initialization and is ready to create browser windows.
   // Some APIs can only be used after this event occurs.
   app.on( 'ready', () => {
+    // set the application menu
+    DefaultMenu.init();
+
     // connect to the database first
     Database.connect().then( () => {
       // once connected we can load the application's
