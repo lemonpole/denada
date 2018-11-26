@@ -1,5 +1,6 @@
 // @flow
 import { app, Menu } from 'electron';
+import is from 'electron-is';
 
 
 // enum items get offset by one on osx because
@@ -7,10 +8,10 @@ import { app, Menu } from 'electron';
 // see: https://electronjs.org/docs/api/menu#main-menus-name
 export const MenuItems: Object = {
   APPNAME: 0,
-  FILE: process.platform === 'darwin' ? 1 : 0,
-  VIEW: process.platform === 'darwin' ? 2 : 1,
-  WINDOW: process.platform === 'darwin' ? 3 : 2,
-  HELP: process.platform === 'darwin' ? 4 : 3
+  FILE: is.osx() ? 1 : 0,
+  VIEW: is.osx() ? 2 : 1,
+  WINDOW: is.osx() ? 3 : 2,
+  HELP: is.osx() ? 4 : 3
 };
 
 export const DefaultMenuTemplate: Array<Object> = [
@@ -54,7 +55,7 @@ export const DefaultMenuTemplate: Array<Object> = [
   }
 ];
 
-if( process.platform === 'darwin' ) {
+if( is.osx() ) {
   DefaultMenuTemplate.unshift({
     label: app.getName(),
     submenu: [
