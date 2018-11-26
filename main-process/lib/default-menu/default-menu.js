@@ -8,10 +8,9 @@ import { app, Menu } from 'electron';
 export const MenuItems: Object = {
   APPNAME: 0,
   FILE: process.platform === 'darwin' ? 1 : 0,
-  EDIT: process.platform === 'darwin' ? 2 : 1,
-  VIEW: process.platform === 'darwin' ? 3 : 2,
-  WINDOW: process.platform === 'darwin' ? 4 : 3,
-  HELP: process.platform === 'darwin' ? 5 : 4
+  VIEW: process.platform === 'darwin' ? 2 : 1,
+  WINDOW: process.platform === 'darwin' ? 3 : 2,
+  HELP: process.platform === 'darwin' ? 4 : 3
 };
 
 export const DefaultMenuTemplate: Array<Object> = [
@@ -19,20 +18,6 @@ export const DefaultMenuTemplate: Array<Object> = [
     label: 'File',
     submenu: [
       { role: 'quit' }
-    ]
-  },
-  {
-    label: 'Edit',
-    submenu: [
-      { role: 'undo' },
-      { role: 'redo' },
-      { type: 'separator' },
-      { role: 'cut' },
-      { role: 'copy' },
-      { role: 'paste' },
-      { role: 'pasteandmatchstyle' },
-      { role: 'delete' },
-      { role: 'selectall' }
     ]
   },
   {
@@ -85,17 +70,6 @@ if( process.platform === 'darwin' ) {
     ]
   });
 
-  DefaultMenuTemplate[ MenuItems.EDIT ].submenu.push(
-    { type: 'separator' },
-    {
-      label: 'Speech',
-      submenu: [
-        { role: 'startspeaking' },
-        { role: 'stopspeaking' }
-      ]
-    }
-  );
-
   DefaultMenuTemplate[ MenuItems.WINDOW ].submenu = [
     { role: 'close' },
     { role: 'minimize' },
@@ -105,15 +79,9 @@ if( process.platform === 'darwin' ) {
   ];
 }
 
-// modify the edit menu for all platforms
-// we don't make use of it for now...
-DefaultMenuTemplate[ MenuItems.EDIT ].submenu = [
-  { role: 'quit' }
-];
-
-// override the applications default menu with this one
+// override the application's default menu with this one.
 // window managers can set their own menu if this doesn't
-// work for them
+// work for them...
 function init() {
   const menu = Menu.buildFromTemplate( DefaultMenuTemplate );
   Menu.setApplicationMenu( menu );
