@@ -29,7 +29,12 @@ function openWindowHandler( evt: Object, data: Object ) {
     }
   };
 
-  WindowManager.createWindow( '/windows/update-revenue', CONFIG.url, CONFIG.opts );
+  // create window and remove menu bar.
+  // we don't need it for this modal
+  const win = WindowManager.createWindow( '/windows/update-revenue', CONFIG.url, CONFIG.opts );
+  win.handle.setMenu( null );
+
+  // we'll need this later...
   revenueObj = data;
 }
 
