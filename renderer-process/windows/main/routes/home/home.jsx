@@ -2,7 +2,7 @@
 import React, { Component, Fragment } from 'react';
 import { ipcRenderer } from 'electron';
 import moment from 'moment';
-import { Card, Icon, Skeleton } from 'antd';
+import { Card, Icon, Skeleton, Menu, Dropdown } from 'antd';
 import { Line } from 'react-chartjs-2';
 
 import './home.scss';
@@ -17,6 +17,17 @@ type State = {
 class Home extends Component<{}, State> {
   // faux timeout when loading data
   FAUX_TIMEOUT: number = 1000;
+
+  menu = (
+    <Menu>
+      <Menu.Item>
+        {'Edit'}
+      </Menu.Item>
+      <Menu.Item>
+        {'Send'}
+      </Menu.Item>
+    </Menu>
+  );
 
   state = {
     activedate: new Date(),
@@ -160,6 +171,11 @@ class Home extends Component<{}, State> {
         <div className="total info">
           {`$${this.toCommas( grandTotal.toFixed( 2 ) )}`}
         </div>
+        <Dropdown overlay={this.menu} trigger={[ 'click' ]}>
+          <div className="actions">
+            <Icon type="ellipsis" />
+          </div>
+        </Dropdown>
       </Card>
     );
   }
