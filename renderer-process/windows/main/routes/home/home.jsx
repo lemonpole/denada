@@ -14,20 +14,25 @@ type State = {
   revenues: Array<any>
 };
 
+
+// overlay component for the actions dropdown component
+// calls `onAction` with the type (edit, send, etc) and the
+// item for which the action was triggered for
+const Overlay = ({ item, onAction }: Object ) => (
+  <Menu onClick={( e: Object ) => onAction( e.key, item )}>
+    <Menu.Item key="edit">
+      {'Edit'}
+    </Menu.Item>
+    <Menu.Item key="send">
+      {'Send'}
+    </Menu.Item>
+  </Menu>
+);
+
+
 class Home extends Component<{}, State> {
   // faux timeout when loading data
   FAUX_TIMEOUT: number = 1000;
-
-  menu = (
-    <Menu>
-      <Menu.Item>
-        {'Edit'}
-      </Menu.Item>
-      <Menu.Item>
-        {'Send'}
-      </Menu.Item>
-    </Menu>
-  );
 
   state = {
     activedate: new Date(),
@@ -102,6 +107,12 @@ class Home extends Component<{}, State> {
     ipcRenderer.send( '/windows/main/check-week', nextweek );
   }
 
+  handleOverlayAction = ( key: string, item: Object ) => {
+    if( key === 'edit' ) {
+      this.handleOnClick( item );
+    }
+  }
+
   renderEmptyDetails = ( item: Object ) => {
     const date = moment( item.long_date );
 
@@ -171,7 +182,10 @@ class Home extends Component<{}, State> {
         <div className="total info">
           {`$${this.toCommas( grandTotal.toFixed( 2 ) )}`}
         </div>
-        <Dropdown overlay={this.menu} trigger={[ 'click' ]}>
+        <Dropdown
+          overlay={<Overlay item={item} onAction={this.handleOverlayAction} />}
+          trigger={[ 'click' ]}
+        >
           <div className="actions">
             <Icon type="ellipsis" />
           </div>
