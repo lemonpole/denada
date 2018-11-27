@@ -142,9 +142,9 @@ class Home extends Component<{}, State> {
     const date = moment( item.long_date );
     const income = item.paper_orders + item.deliveries;
 
-    let adjTotal = 0;
+    let adjTotal = item.expenses;
 
-    if( item.expenses.length > 0 ) {
+    if( Array.isArray( item.expenses ) && item.expenses.length > 0 ) {
       adjTotal = item.expenses
         .map( adj => adj.amt )
         .reduce( ( total, amt ) => total + amt );
