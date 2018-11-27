@@ -54,7 +54,14 @@ class App extends Component<{}, State> {
   componentDidMount() {
     ipcRenderer.send( '/windows/update-revenue/load-data' );
     ipcRenderer.on( '/windows/update-revenue/loaded-data', ( evt: Object, res: Object ) => {
+      const { paperOrders, deliveries, expenses } = this.state;
+
       this.revenueObj = res;
+      this.setState({
+        paperOrders: { ...paperOrders, value: res.paper_orders },
+        deliveries: { ...deliveries, value: res.deliveries },
+        expenses: { ...expenses, value: res.expenses }
+      });
     });
 
     // once done updating send the command to close this window
@@ -78,7 +85,7 @@ class App extends Component<{}, State> {
     }
 
     output[ id ] = {
-      value: parseFloat( value ),
+      value,
       validateStatus: invalid ? 'error' : 'success',
       errorMsg: invalid ? 'Must be a number!' : null,
       pristine: false
@@ -89,9 +96,9 @@ class App extends Component<{}, State> {
 
   handleSubmit = ( evt: Object ) => {
     evt.preventDefault();
-    this.revenueObj.paper_orders = this.state.paperOrders.value;
-    this.revenueObj.deliveries = this.state.deliveries.value;
-    this.revenueObj.expenses = this.state.expenses.value;
+    this.revenueObj.paper_orders = parseFloat( this.state.paperOrders.value );
+    this.revenueObj.deliveries = parseFloat( this.state.deliveries.value );
+    this.revenueObj.expenses = parseFloat( this.state.expenses.value );
 
     ipcRenderer.send( '/windows/update-revenue/update', this.revenueObj );
     this.setState({ saving: true });
@@ -136,6 +143,7 @@ class App extends Component<{}, State> {
                 autoFocus
                 id="paperOrders"
                 placeholder={'0.00'}
+                value={this.state.paperOrders.value || null}
                 addonBefore={'$'}
                 onChange={this.handleInputChange}
               />
@@ -148,6 +156,7 @@ class App extends Component<{}, State> {
               <Input
                 id="deliveries"
                 placeholder={'0.00'}
+                value={this.state.deliveries.value || null}
                 addonBefore={'$'}
                 onChange={this.handleInputChange}
               />
@@ -164,6 +173,7 @@ class App extends Component<{}, State> {
               <Input
                 id="expenses"
                 placeholder={'0.00'}
+                value={this.state.expenses.value || null}
                 addonBefore={'$'}
                 onChange={this.handleInputChange}
               />
