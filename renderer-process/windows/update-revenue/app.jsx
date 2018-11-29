@@ -26,7 +26,8 @@ class App extends Component<{}, State> {
   FAUX_TIMEOUT: number = 1000;
 
   // loaded async but should be ready by the time
-  // the user submits the form
+  // the user submits the form. used to store the
+  // date information that the user can't modify
   revenueObj: Object;
 
   state = {
@@ -58,9 +59,9 @@ class App extends Component<{}, State> {
 
       this.revenueObj = res;
       this.setState({
-        paperOrders: { ...paperOrders, value: res.paper_orders },
-        deliveries: { ...deliveries, value: res.deliveries },
-        expenses: { ...expenses, value: res.expenses }
+        paperOrders: { ...paperOrders, value: res.paper_orders, pristine: !res.paper_orders > 0 },
+        deliveries: { ...deliveries, value: res.deliveries, pristine: !res.deliveries > 0 },
+        expenses: { ...expenses, value: res.expenses, pristine: !res.expenses > 0 }
       });
     });
 
@@ -113,10 +114,19 @@ class App extends Component<{}, State> {
 
     // loop through the fields and validate them
     // if the field is pristine consider it invalid as well
-    [ 'paperOrders', 'deliveries', 'expenses' ].forEach( ( fieldstr: string ) => {
-      const field = this.state[ fieldstr ];
+    // @TODO get this array dynamically
+    const ids = [ 'paperOrders', 'deliveries', 'expenses' ];
+
+    for( let i = 0; i < 3; i++ ) {
+      const id = ids[ i ];
+      const field = this.state[ id ];
       invalid = field.validateStatus === 'error' || field.pristine;
-    });
+
+      // bail if we have an invalid field
+      if( invalid ) {
+        break;
+      }
+    }
 
     return invalid;
   }
