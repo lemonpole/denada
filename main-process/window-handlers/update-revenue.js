@@ -53,6 +53,9 @@ function closeWindowHandler( evt: Object, cancel: boolean = false ) {
       .webContents
       .send( '/windows/update-revenue/closed', revenueObj );
   }
+
+  // reset the revenue object to be re-used later
+  revenueObj = null;
 }
 
 function fetchRevenueHandler( evt: Object ) {
