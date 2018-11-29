@@ -1,10 +1,14 @@
 {
   "name": "denada",
-  "version": "1.0.0",
+  "version": "1.0.0-beta.1",
   "description": "A simple accounting app for Justin's lazy ass.",
   "main": "main.bundle.js",
   "author": "Steve Rivera",
   "license": "UNLICENSED",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/lemonpole/denada.git"
+  },
   "scripts": {
     "build": "npm run build:renderer && npm run build:electron && electron-builder",
     "build:dry-run": "npm run build:renderer && npm run build:electron && electron-builder --dir",
@@ -13,6 +17,7 @@
     "lint": "eslint --ext .js,.jsx main-process renderer-process",
     "flow": "flow",
     "flow-typed:install": "flow-typed install --overwrite",
+    "publish": "build -p always",
     "start:dev": "npm run start:dev-server -- --dev-electron",
     "start:dev:console": "npm run start:dev-server -- --dev-electron --dev-console",
     "start:dev-electron": "npm run build:electron && cross-env NODE_ENV=development electron ./main.bundle.js",
@@ -21,7 +26,8 @@
   "build": {
     "appId": "com.electron.denada",
     "mac": {
-      "category": "public.app.category.finance"
+      "category": "public.app.category.finance",
+      "identity": "null"
     },
     "directories": {
       "buildResources": "resources"
@@ -68,6 +74,7 @@
     "electron": "3.0.4",
     "electron-builder": "20.36.2",
     "electron-rebuild": "1.8.2",
+    "electron-updater": "4.0.4",
     "eslint": "4.19.1",
     "eslint-config-airbnb": "17.1.0",
     "eslint-import-resolver-webpack": "0.10.1",
