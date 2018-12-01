@@ -1,12 +1,33 @@
 // @flow
 import { app } from 'electron';
 import moment from 'moment';
+import { autoUpdater } from 'electron-updater';
 
 import ipc from 'main/ipc';
 import { MainWindow, UpdateRevenueWindow } from 'main/window-handlers';
 import Database from 'main/lib/database';
 import WindowManager from 'main/lib/window-manager';
 import DefaultMenu from 'main/lib/default-menu';
+
+
+/**
+ * Auto-updater logic
+ *
+ * Place code here until it can be moved to its own
+ * module elsewhere.
+ */
+app.on( 'ready', () => {
+  autoUpdater.checkForUpdates();
+});
+autoUpdater.on( 'checking-for-update', () => {
+  console.log( 'checking for update...' );
+});
+autoUpdater.on( 'update-available', ( info: Object ) => {
+  console.log( 'update available', info );
+});
+autoUpdater.on( 'update-not-available', ( info: Object ) => {
+  console.log( 'update not available', info );
+});
 
 
 // Override the default moment locale and force it to
