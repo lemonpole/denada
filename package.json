@@ -1,6 +1,6 @@
 {
   "name": "denada",
-  "version": "1.0.0-beta.8",
+  "version": "1.0.0-beta.9",
   "description": "A simple accounting app for Justin's lazy ass.",
   "main": "main.bundle.js",
   "author": "Steve Rivera",
@@ -35,10 +35,10 @@
     "files": [
       "main.bundle.js",
       "dist/renderer/windows/**/*"
-    ]
-  },
-  "publish": {
-    "releaseType": "release"
+    ],
+    "publish": {
+      "releaseType": "release"
+    }
   },
   "dependencies": {
     "antd": "3.10.1",

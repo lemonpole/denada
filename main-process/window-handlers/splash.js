@@ -156,6 +156,7 @@ export default () => {
     autoUpdater.checkForUpdates();
     autoUpdater.on( 'error', handleError );
     autoUpdater.on( 'checking-for-update', handleCheckingUpdate );
+    autoUpdater.on( 'update-available', handleUpdateAvail );
     autoUpdater.on( 'update-not-available', handleNoUpdateAvail );
     autoUpdater.on( 'download-progress', handleDownloadProgress );
     autoUpdater.on( 'update-downloaded', handleUpdateDownloaded );
