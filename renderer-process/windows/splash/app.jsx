@@ -31,11 +31,16 @@ class App extends Component<{}, State> {
   }
 
   handleUpdateAvail = () => {
-    this.setState({ status: 'Downloading update...', downloading: true });
+    this.setState({
+      status: 'Downloading update...',
+      downloading: true
+    });
   }
 
   handleDownloadProgress = ( evt: Event, progressObj: Object ) => {
-    this.setState({ progress: progressObj.percent });
+    this.setState({
+      progress: progressObj.percent
+    });
   }
 
   handleUpdateDownloaded = () => {
@@ -47,12 +52,14 @@ class App extends Component<{}, State> {
       <div id="splash">
         <img src={icondataurl} alt={'denada'} />
         <p>{this.state.status}</p>
-        {this.state.downloading && (
-          <Progress
-            percent={this.state.progress}
-            status={'active'}
-          />
-        )}
+        <div className="progress-container">
+          {this.state.downloading && (
+            <Progress
+              percent={this.state.progress}
+              status={'active'}
+            />
+          )}
+        </div>
       </div>
     );
   }
