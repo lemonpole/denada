@@ -6,7 +6,7 @@
   cursor: default;
 
   // Cover the whole window
-  min-height: 100%;
+  height: 100%;
 
   // Make sure this matches the native window background color that you pass to
   // electron.BrowserWindow({...}), otherwise your app startup will look janky.

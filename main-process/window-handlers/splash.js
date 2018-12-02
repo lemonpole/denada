@@ -1,5 +1,6 @@
 // @flow
 import path from 'path';
+import { ipcMain } from 'electron';
 import is from 'electron-is';
 import { autoUpdater } from 'electron-updater';
 import WindowManager from 'main/lib/window-manager';
@@ -22,34 +23,49 @@ const CONFIG = {
   }
 };
 
+let win;
+
 
 // auto updater event handlers
 function handleCheckingUpdate() {
   // @TODO
 }
 
+function handleUpdateAvail( info: Object ) {
+  win.handle.webContents.send( '/windows/splash/update-avail' );
+}
+
 function handleDownloadProgress( progressObj: Object ) {
-  // @TODO
+  win.handle.webContents.send( '/windows/splash/download-progress', progressObj );
 }
 
 function handleUpdateDownloaded( info: Object ) {
-  // @TODO
+  win.handle.webContents.send( '/windows/splash/update-downloaded' );
 }
 
 function debuggingjawn() {
+  let ivl;
+
   // immediately call `handleCheckingUpdate`
   handleCheckingUpdate();
 
-  // on a timer, call `handleDownloadProgress`
-  // emulate downloadprogress object
-  const ivl = setInterval( () => {
-    handleDownloadProgress({
-      bytesPerSecond: 1500,
-      percent: 50,
-      transferred: 1500,
-      total: 3000
-    });
-  }, 500 );
+  // after two seconds, say we found an update
+  setTimeout( () => {
+    handleUpdateAvail({});
+  }, 2000 );
+
+  // after two seconds, create a timer to call
+  // handleDownloadProgress`
+  setTimeout( () => {
+    ivl = setInterval( () => {
+      handleDownloadProgress({
+        bytesPerSecond: 1500,
+        percent: 50,
+        transferred: 1500,
+        total: 3000
+      });
+    }, 500 );
+  }, 2500 );
 
   // after a few seconds, call `handleUpdateDownloaded`
   // and cancel the above timer
@@ -70,5 +86,5 @@ export default () => {
   // autoUpdater.on( 'update-downloaded', handleUpdateDownloaded );
 
   // create the window
-  WindowManager.createWindow( '/windows/splash', CONFIG.url, CONFIG.opts );
+  win = WindowManager.createWindow( '/windows/splash', CONFIG.url, CONFIG.opts );
 };

@@ -36,6 +36,8 @@ declare module "antd" {
 
   declare export class Skeleton extends React$Component<{}> {}
 
+  declare export class Progress extends React$Component<{}> {}
+
   declare export class Checkbox extends React$Component<{}> {
     static Group: typeof CheckboxGroup;
   }
