@@ -15,11 +15,17 @@ const CONFIG = {
     ? `file://${path.join( __dirname, 'dist/renderer/windows/splash/index.html' )}`
     : `http://localhost:${PORT}/windows/splash/index.html`,
   opts: {
-    titleBarStyle: 'hidden',
     backgroundColor: '#f5f5f5', // "whitesmoke"
     width: WIDTH,
     height: HEIGHT,
-    maximizable: false
+    frame: false,
+    alwaysOnTop: true,
+    maximizable: false,
+    resizable: false,
+    movable: false,
+    minimizable: false,
+    closable: false,
+    fullscreenable: false
   }
 };
 
