@@ -1,6 +1,6 @@
 {
   "name": "denada",
-  "version": "1.0.0-beta.3",
+  "version": "1.0.0-beta.4",
   "description": "A simple accounting app for Justin's lazy ass.",
   "main": "main.bundle.js",
   "author": "Steve Rivera",
@@ -11,7 +11,7 @@
   },
   "scripts": {
     "build": "npm run build:renderer && npm run build:electron && electron-builder -mw",
-    "build:dry-run": "npm run build:renderer && npm run build:electron && electron-builder --dir",
+    "build:dry-run": "npm run build:renderer && npm run build:electron && electron-builder -mw --dir",
     "build:electron": "cross-env NODE_ENV=production node -r babel-register ./webpack/compiler.js --electron",
     "build:renderer": "cross-env NODE_ENV=production node -r babel-register ./webpack/compiler.js --renderer",
     "lint": "eslint --ext .js,.jsx main-process renderer-process",
@@ -41,6 +41,7 @@
     "antd": "3.10.1",
     "chart.js": "2.7.3",
     "electron-is": "3.0.0",
+    "electron-log": "2.2.17",
     "electron-updater": "4.0.4",
     "empty": "0.10.1",
     "moment": "2.22.2",

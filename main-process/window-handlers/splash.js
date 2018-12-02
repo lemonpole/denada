@@ -3,6 +3,7 @@ import path from 'path';
 import { ipcMain } from 'electron';
 import is from 'electron-is';
 import { autoUpdater } from 'electron-updater';
+import log from 'electron-log';
 import WindowManager from 'main/lib/window-manager';
 
 
@@ -30,7 +31,22 @@ const CONFIG = {
 let win;
 
 
+// configure electron-updater logger
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = 'debug';
+
+
 // auto updater event handlers
+function handleError( err: Error ) {
+  win.handle.webContents.send( '/windows/splash/error', err );
+
+  // attempt to launch the main application anyways
+  setTimeout( () => {
+    win.handle.close();
+    ipcMain.emit( '/windows/main/open' );
+  }, 2000 );
+}
+
 function handleCheckingUpdate() {
   // @TODO
 }
@@ -129,6 +145,7 @@ export default () => {
   // otherwise use the fake one.
   if( is.production() ) {
     autoUpdater.checkForUpdates();
+    autoUpdater.on( 'error', handleError );
     autoUpdater.on( 'checking-for-update', handleCheckingUpdate );
     autoUpdater.on( 'update-not-available', handleNoUpdateAvail );
     autoUpdater.on( 'download-progress', handleDownloadProgress );
