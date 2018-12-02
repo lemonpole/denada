@@ -44,7 +44,10 @@ class App extends Component<{}, State> {
   }
 
   handleUpdateDownloaded = () => {
-    // @TODO
+    this.setState({
+      status: 'Done.',
+      downloading: false
+    });
   }
 
   render() {
