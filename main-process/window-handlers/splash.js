@@ -72,7 +72,8 @@ function handleUpdateAvail( info: Object ) {
 }
 
 function handleDownloadProgress( progressObj: Object ) {
-  log.debug( `download progress... ${JSON.stringify( progressObj )}` );
+  log.debug( 'download progress...' );
+  log.debug( JSON.stringify( progressObj ) );
   win.handle.webContents.send( '/windows/splash/download-progress', progressObj );
 }
 
@@ -153,13 +154,13 @@ export default () => {
   // if in production use the real auto-updater
   // otherwise use the fake one.
   if( is.production() ) {
-    autoUpdater.checkForUpdates();
     autoUpdater.on( 'error', handleError );
     autoUpdater.on( 'checking-for-update', handleCheckingUpdate );
     autoUpdater.on( 'update-available', handleUpdateAvail );
     autoUpdater.on( 'update-not-available', handleNoUpdateAvail );
     autoUpdater.on( 'download-progress', handleDownloadProgress );
     autoUpdater.on( 'update-downloaded', handleUpdateDownloaded );
+    autoUpdater.checkForUpdates();
   } else {
     fakeAutoUpdater();
   }
