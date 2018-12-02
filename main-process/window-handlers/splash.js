@@ -85,8 +85,9 @@ function fakeAutoUpdater() {
 
 
 export default () => {
+  // if in production use the real auto-updater
+  // otherwise use the fake one.
   if( is.production() ) {
-    // auto updater logic and events
     autoUpdater.checkForUpdates();
     autoUpdater.on( 'checking-for-update', handleCheckingUpdate );
     autoUpdater.on( 'download-progress', handleDownloadProgress );
