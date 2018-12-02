@@ -84,13 +84,15 @@ function debuggingjawn() {
 
 
 export default () => {
-  debuggingjawn();
-
-  // auto updater logic and events
-  // autoUpdater.checkForUpdates();
-  // autoUpdater.on( 'checking-for-update', handleCheckingUpdate );
-  // autoUpdater.on( 'download-progress', handleDownloadProgress );
-  // autoUpdater.on( 'update-downloaded', handleUpdateDownloaded );
+  if( is.production() ) {
+    // auto updater logic and events
+    autoUpdater.checkForUpdates();
+    autoUpdater.on( 'checking-for-update', handleCheckingUpdate );
+    autoUpdater.on( 'download-progress', handleDownloadProgress );
+    autoUpdater.on( 'update-downloaded', handleUpdateDownloaded );
+  } else {
+    debuggingjawn();
+  }
 
   // create the window
   win = WindowManager.createWindow( '/windows/splash', CONFIG.url, CONFIG.opts );
