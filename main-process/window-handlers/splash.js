@@ -42,8 +42,8 @@ function handleError( err: Error ) {
 
   // attempt to launch the main application anyways
   setTimeout( () => {
-    win.handle.close();
     ipcMain.emit( '/windows/main/open' );
+    win.handle.close();
   }, 2000 );
 }
 
@@ -57,8 +57,8 @@ function handleNoUpdateAvail( info: Object ) {
   // close the splash window after 2 seconds
   // and open the main application window
   setTimeout( () => {
-    win.handle.close();
     ipcMain.emit( '/windows/main/open' );
+    win.handle.close();
   }, 2000 );
 }
 
@@ -80,9 +80,9 @@ function handleUpdateDownloaded( info: Object ) {
   }
 
   // otherwise, manually close this window
-  // and open the main applicatio window
-  win.handle.close();
+  // and open the main application window
   ipcMain.emit( '/windows/main/open' );
+  win.handle.close();
 }
 
 // fake auto-updater for development mode
@@ -141,6 +141,9 @@ function fakeAutoUpdater() {
 
 
 export default () => {
+  // create the window
+  win = WindowManager.createWindow( '/windows/splash', CONFIG.url, CONFIG.opts );
+
   // if in production use the real auto-updater
   // otherwise use the fake one.
   if( is.production() ) {
@@ -153,7 +156,4 @@ export default () => {
   } else {
     fakeAutoUpdater();
   }
-
-  // create the window
-  win = WindowManager.createWindow( '/windows/splash', CONFIG.url, CONFIG.opts );
 };
