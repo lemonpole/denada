@@ -1,6 +1,6 @@
 {
   "name": "denada",
-  "version": "1.0.0-beta.16",
+  "version": "1.0.0-beta.17",
   "description": "A simple accounting app for Justin's lazy ass.",
   "main": "main.bundle.js",
   "author": "Steve Rivera",
@@ -28,6 +28,13 @@
     "mac": {
       "category": "public.app.category.finance",
       "identity": "null"
+    },
+    "dmg": {
+      "title": "${productName}"
+    },
+    "nsis": {
+      "artifactName": "${productName} Setup.${ext}",
+      "uninstallDisplayName": "${productName}"
     },
     "directories": {
       "buildResources": "resources"
