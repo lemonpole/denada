@@ -32,6 +32,7 @@ let win;
 
 
 // configure electron-updater logger
+autoUpdater.autoDownload = false;
 autoUpdater.logger = log;
 autoUpdater.logger.transports.file.level = 'debug';
 
@@ -63,6 +64,10 @@ function handleNoUpdateAvail( info: Object ) {
 }
 
 function handleUpdateAvail( info: Object ) {
+  if( is.production() ) {
+    autoUpdater.downloadUpdate();
+  }
+
   win.handle.webContents.send( '/windows/splash/update-avail' );
 }
 
