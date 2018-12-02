@@ -72,7 +72,7 @@ function handleUpdateAvail( info: Object ) {
 }
 
 function handleDownloadProgress( progressObj: Object ) {
-  log.debug( 'download progress...', JSON.stringify( progressObj ) );
+  log.debug( `download progress... ${JSON.stringify( progressObj )}` );
   win.handle.webContents.send( '/windows/splash/download-progress', progressObj );
 }
 
