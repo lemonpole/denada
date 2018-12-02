@@ -47,7 +47,8 @@ function handleUpdateDownloaded( info: Object ) {
   win.handle.webContents.send( '/windows/splash/update-downloaded' );
 }
 
-function debuggingjawn() {
+// fake auto-updater for development mode
+function fakeAutoUpdater() {
   const FOUND_DELAY = 2000;
   const DOWNLOAD_FREQ = 500;
   const END_DOWNLOAD_DELAY = 5000;
@@ -91,7 +92,7 @@ export default () => {
     autoUpdater.on( 'download-progress', handleDownloadProgress );
     autoUpdater.on( 'update-downloaded', handleUpdateDownloaded );
   } else {
-    debuggingjawn();
+    fakeAutoUpdater();
   }
 
   // create the window
