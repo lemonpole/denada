@@ -37,6 +37,7 @@
       "dist/renderer/windows/**/*"
     ],
     "publish": {
+      "provider": "github",
       "releaseType": "release"
     }
   },
