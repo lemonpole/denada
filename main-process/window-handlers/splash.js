@@ -72,24 +72,26 @@ function handleUpdateAvail( info: Object ) {
 }
 
 function handleDownloadProgress( progressObj: Object ) {
-  log.debug( 'download progress...' );
-  log.debug( JSON.stringify( progressObj ) );
   win.handle.webContents.send( '/windows/splash/download-progress', progressObj );
 }
 
 function handleUpdateDownloaded( info: Object ) {
   win.handle.webContents.send( '/windows/splash/update-downloaded' );
 
-  // if in production quit and install the update
-  if( is.production() ) {
-    autoUpdater.quitAndInstall();
-    return;
-  }
+  // wait two seconds so that the GUI gets a chance
+  // to show a `done` message
+  setTimeout( () => {
+    // if in production: quit and install the update
+    if( is.production() ) {
+      autoUpdater.quitAndInstall();
+      return;
+    }
 
-  // otherwise, manually close this window
-  // and open the main application window
-  ipcMain.emit( '/windows/main/open' );
-  win.handle.close();
+    // otherwise, manually close this window
+    // and open the main application window
+    ipcMain.emit( '/windows/main/open' );
+    win.handle.close();
+  }, 2000 );
 }
 
 // fake auto-updater for development mode

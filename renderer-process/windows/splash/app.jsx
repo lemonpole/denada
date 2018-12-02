@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { ipcRenderer } from 'electron';
-import { Progress } from 'antd';
+import { Icon } from 'antd';
 
 import './app.scss';
 import icondataurl from 'resources/background.png';
@@ -9,15 +9,21 @@ import icondataurl from 'resources/background.png';
 
 type State = {
   status: string,
-  downloading: boolean,
-  progress: number
+  downloading: boolean
 };
 
 class App extends Component<{}, State> {
+  statuses = {
+    CHECKING: 'Checking for updates...',
+    ERROR: 'Error checking for update. See logs for more information.',
+    UPTODATE: 'Up to date.',
+    DOWNLOADING: 'Downloading update...',
+    DONE: 'Done.'
+  }
+
   state = {
-    status: 'Checking for updates...',
-    downloading: false,
-    progress: 0
+    status: this.statuses.CHECKING,
+    downloading: false
   }
 
   componentDidMount() {
@@ -31,7 +37,7 @@ class App extends Component<{}, State> {
 
   handleError = ( err: Error ) => {
     this.setState({
-      status: 'Error checking for update. See logs for more information.'
+      status: this.statuses.ERROR
     });
   }
 
@@ -41,26 +47,31 @@ class App extends Component<{}, State> {
 
   handleNoUpdateAvail = () => {
     this.setState({
-      status: 'Up to date.'
+      status: this.statuses.UPTODATE
     });
   }
 
   handleUpdateAvail = () => {
     this.setState({
-      status: 'Downloading update...',
+      status: this.statuses.DOWNLOADING,
       downloading: true
     });
   }
 
+  /**
+   * NOTE: There is an active issue with auto-updater that does not
+   * emit the download progress while doing differential updates.
+   *
+   * See: https://github.com/electron-userland/electron-builder/issues/3106
+   * See: https://github.com/electron-userland/electron-builder/issues/2521
+   */
   handleDownloadProgress = ( evt: Event, progressObj: Object ) => {
-    this.setState({
-      progress: progressObj.percent
-    });
+    // @TODO
   }
 
   handleUpdateDownloaded = () => {
     this.setState({
-      status: 'Done.',
+      status: this.statuses.DONE,
       downloading: false
     });
   }
@@ -72,10 +83,10 @@ class App extends Component<{}, State> {
         <p>{this.state.status}</p>
         <div className="progress-container">
           {this.state.downloading && (
-            <Progress
-              percent={this.state.progress}
-              status={'active'}
-            />
+            <Icon spin type="sync" />
+          )}
+          {this.state.status === this.statuses.DONE && (
+            <Icon type="check" />
           )}
         </div>
       </div>
