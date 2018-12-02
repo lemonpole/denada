@@ -36,13 +36,38 @@ function handleUpdateDownloaded( info: Object ) {
   // @TODO
 }
 
+function debuggingjawn() {
+  // immediately call `handleCheckingUpdate`
+  handleCheckingUpdate();
+
+  // on a timer, call `handleDownloadProgress`
+  // emulate downloadprogress object
+  const ivl = setInterval( () => {
+    handleDownloadProgress({
+      bytesPerSecond: 1500,
+      percent: 50,
+      transferred: 1500,
+      total: 3000
+    });
+  }, 500 );
+
+  // after a few seconds, call `handleUpdateDownloaded`
+  // and cancel the above timer
+  setTimeout( () => {
+    clearInterval( ivl );
+    handleUpdateDownloaded({});
+  }, 5000 );
+}
+
 
 export default () => {
+  debuggingjawn();
+
   // auto updater logic and events
-  autoUpdater.checkForUpdates();
-  autoUpdater.on( 'checking-for-update', handleCheckingUpdate );
-  autoUpdater.on( 'download-progress', handleDownloadProgress );
-  autoUpdater.on( 'update-downloaded', handleUpdateDownloaded );
+  // autoUpdater.checkForUpdates();
+  // autoUpdater.on( 'checking-for-update', handleCheckingUpdate );
+  // autoUpdater.on( 'download-progress', handleDownloadProgress );
+  // autoUpdater.on( 'update-downloaded', handleUpdateDownloaded );
 
   // create the window
   WindowManager.createWindow( '/windows/splash', CONFIG.url, CONFIG.opts );
