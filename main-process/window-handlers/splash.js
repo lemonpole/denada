@@ -56,6 +56,17 @@ function handleDownloadProgress( progressObj: Object ) {
 
 function handleUpdateDownloaded( info: Object ) {
   win.handle.webContents.send( '/windows/splash/update-downloaded' );
+
+  // if in production quit and install the update
+  if( is.production() ) {
+    autoUpdater.quitAndInstall();
+    return;
+  }
+
+  // otherwise, manually close this window
+  // and open the main applicatio window
+  win.handle.close();
+  ipcMain.emit( '/windows/main/open' );
 }
 
 // fake auto-updater for development mode
@@ -64,9 +75,13 @@ function fakeAutoUpdater() {
   const DOWNLOAD_FREQ = 500;
   const END_DOWNLOAD_DELAY = 5000;
 
+  const PROBABILITY_MIN = 0;
+  const PROBABILITY_MAX = 10;
+  const NO_UPDATE_PROBABILITY_HIGH = 5;
+
   // generate a random number to decide whether we'll
   // fake an update or not
-  const num = Math.floor( Math.random() * 10 ) + 0;
+  const num = Math.floor( Math.random() * PROBABILITY_MAX ) + PROBABILITY_MIN;
 
   let ivl;
   let progress = 0;
@@ -76,7 +91,7 @@ function fakeAutoUpdater() {
 
   // if we're below five then no update was found
   // send the message and bail
-  if( num < 5 ) {
+  if( num < NO_UPDATE_PROBABILITY_HIGH ) {
     setTimeout( () => {
       handleNoUpdateAvail({});
     }, FOUND_DELAY );
