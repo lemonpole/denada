@@ -7,12 +7,16 @@ import icondataurl from 'resources/background.png';
 
 
 type State = {
-  status: string
+  status: string,
+  downloading: boolean,
+  progress: number
 };
 
 class App extends Component<{}, State> {
   state = {
-    status: 'Checking for updates...'
+    status: 'Checking for updates...',
+    downloading: false,
+    progress: 0
   }
 
   componentDidMount() {
@@ -27,11 +31,11 @@ class App extends Component<{}, State> {
   }
 
   handleUpdateAvail = () => {
-    this.setState({ status: 'Downloading update...' });
+    this.setState({ status: 'Downloading update...', downloading: true });
   }
 
-  handleDownloadProgress = () => {
-    // @TODO
+  handleDownloadProgress = ( evt: Event, progressObj: Object ) => {
+    this.setState({ progress: progressObj.percent });
   }
 
   handleUpdateDownloaded = () => {
@@ -43,10 +47,12 @@ class App extends Component<{}, State> {
       <div id="splash">
         <img src={icondataurl} alt={'denada'} />
         <p>{this.state.status}</p>
-        <Progress
-          percent={0}
-          status={'active'}
-        />
+        {this.state.downloading && (
+          <Progress
+            percent={this.state.progress}
+            status={'active'}
+          />
+        )}
       </div>
     );
   }

@@ -1,6 +1,5 @@
 // @flow
 import path from 'path';
-import { ipcMain } from 'electron';
 import is from 'electron-is';
 import { autoUpdater } from 'electron-updater';
 import WindowManager from 'main/lib/window-manager';
@@ -19,7 +18,6 @@ const CONFIG = {
     width: WIDTH,
     height: HEIGHT,
     frame: false,
-    alwaysOnTop: true,
     maximizable: false,
     resizable: false,
     movable: false,
@@ -50,35 +48,38 @@ function handleUpdateDownloaded( info: Object ) {
 }
 
 function debuggingjawn() {
+  const FOUND_DELAY = 2000;
+  const DOWNLOAD_FREQ = 500;
+  const END_DOWNLOAD_DELAY = 5000;
+
   let ivl;
+  let progress = 0;
 
   // immediately call `handleCheckingUpdate`
   handleCheckingUpdate();
 
   // after two seconds, say we found an update
+  // and begin downloading it
   setTimeout( () => {
     handleUpdateAvail({});
-  }, 2000 );
 
-  // after two seconds, create a timer to call
-  // handleDownloadProgress`
-  setTimeout( () => {
     ivl = setInterval( () => {
+      progress += 20;
       handleDownloadProgress({
         bytesPerSecond: 1500,
-        percent: 50,
+        percent: progress,
         transferred: 1500,
         total: 3000
       });
-    }, 500 );
-  }, 2500 );
+    }, DOWNLOAD_FREQ );
+  }, FOUND_DELAY );
 
   // after a few seconds, call `handleUpdateDownloaded`
   // and cancel the above timer
   setTimeout( () => {
     clearInterval( ivl );
     handleUpdateDownloaded({});
-  }, 5000 );
+  }, END_DOWNLOAD_DELAY );
 }
 
 
