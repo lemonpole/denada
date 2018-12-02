@@ -12,6 +12,11 @@ export default {
   mode: 'development',
   resolve: webpackConfigResolve,
   entry: {
+    splash: [
+      'react-hot-loader/patch',
+      `webpack-hot-middleware/client?reload=true&path=http://localhost:${PORT}/__webpack_hmr`,
+      path.join( ROOT, 'renderer-process/windows/splash/index' )
+    ],
     main: [
       'react-hot-loader/patch',
       `webpack-hot-middleware/client?reload=true&path=http://localhost:${PORT}/__webpack_hmr`,
@@ -40,6 +45,11 @@ export default {
   plugins: [
     // https://webpack.github.io/docs/hot-module-replacement-with-webpack.html
     new webpack.HotModuleReplacementPlugin(),
+    new HtmlWebpackPlugin({
+      filename: 'splash/index.html',
+      template: path.join( __dirname, 'index.template.html' ),
+      chunks: [ 'splash' ]
+    }),
     new HtmlWebpackPlugin({
       filename: 'main/index.html',
       template: path.join( __dirname, 'index.template.html' ),

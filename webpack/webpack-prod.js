@@ -13,6 +13,7 @@ export default {
   mode: 'production',
   resolve: webpackConfigResolve,
   entry: {
+    splash: path.join( ROOT, 'renderer-process/windows/splash/index' ),
     main: path.join( ROOT, 'renderer-process/windows/main/index' ),
     'update-revenue': path.join( ROOT, 'renderer-process/windows/update-revenue/index' )
   },
@@ -35,6 +36,11 @@ export default {
   plugins: [
     new CleanWebpackPlugin([ 'dist' ], {
       root: ROOT
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'splash/index.html',
+      template: path.join( __dirname, 'index.template.html' ),
+      chunks: [ 'splash' ]
     }),
     new HtmlWebpackPlugin({
       filename: 'main/index.html',

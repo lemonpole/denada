@@ -6,8 +6,8 @@
   "author": "Steve Rivera",
   "license": "UNLICENSED",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/lemonpole/denada.git"
+    "type": "git",
+    "url": "https://github.com/lemonpole/denada.git"
   },
   "scripts": {
     "build": "npm run build:renderer && npm run build:electron && electron-builder",
@@ -41,6 +41,7 @@
     "antd": "3.10.1",
     "chart.js": "2.7.3",
     "electron-is": "3.0.0",
+    "electron-updater": "4.0.4",
     "empty": "0.10.1",
     "moment": "2.22.2",
     "nedb": "1.8.0",
@@ -74,7 +75,6 @@
     "electron": "3.0.4",
     "electron-builder": "20.36.2",
     "electron-rebuild": "1.8.2",
-    "electron-updater": "4.0.4",
     "eslint": "4.19.1",
     "eslint-config-airbnb": "17.1.0",
     "eslint-import-resolver-webpack": "0.10.1",

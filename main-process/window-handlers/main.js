@@ -24,6 +24,10 @@ const CONFIG = {
 };
 
 // ipc handlers
+function openWindowHandler( evt: Object, data: Object ) {
+  WindowManager.createWindow( '/windows/main', CONFIG.url, CONFIG.opts );
+}
+
 function generateWeek( date: Date | void ) {
   const db = Database.getClient();
   const monday = moment( date ).startOf( 'isoweek' );
@@ -126,9 +130,8 @@ async function createweekDialogHandler( evt: Object, date: Date ) {
 }
 
 export default () => {
-  WindowManager.createWindow( '/windows/main', CONFIG.url, CONFIG.opts );
-
   // ipc listeners
+  ipcMain.on( '/windows/main/open', openWindowHandler );
   ipcMain.on( '/windows/main/load-data', loadDataHandler );
   ipcMain.on( '/windows/main/check-week', checkWeekHandler );
   ipcMain.on( '/windows/main/dialogs/create-week', createweekDialogHandler );
