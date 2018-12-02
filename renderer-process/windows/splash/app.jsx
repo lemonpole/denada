@@ -21,6 +21,7 @@ class App extends Component<{}, State> {
 
   componentDidMount() {
     ipcRenderer.on( '/windows/splash/checking-update', this.handleCheckingUpdate );
+    ipcRenderer.on( '/windows/splash/no-update-avail', this.handleNoUpdateAvail );
     ipcRenderer.on( '/windows/splash/update-avail', this.handleUpdateAvail );
     ipcRenderer.on( '/windows/splash/download-progress', this.handleDownloadProgress );
     ipcRenderer.on( '/windows/splash/update-downloaded', this.handleUpdateDownloaded );
@@ -28,6 +29,12 @@ class App extends Component<{}, State> {
 
   handleCheckingUpdate = () => {
     // @TODO
+  }
+
+  handleNoUpdateAvail = () => {
+    this.setState({
+      status: 'Up to date.'
+    });
   }
 
   handleUpdateAvail = () => {

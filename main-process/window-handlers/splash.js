@@ -1,5 +1,6 @@
 // @flow
 import path from 'path';
+import { ipcMain } from 'electron';
 import is from 'electron-is';
 import { autoUpdater } from 'electron-updater';
 import WindowManager from 'main/lib/window-manager';
@@ -22,7 +23,6 @@ const CONFIG = {
     resizable: false,
     movable: false,
     minimizable: false,
-    closable: false,
     fullscreenable: false
   }
 };
@@ -33,6 +33,17 @@ let win;
 // auto updater event handlers
 function handleCheckingUpdate() {
   // @TODO
+}
+
+function handleNoUpdateAvail( info: Object ) {
+  win.handle.webContents.send( '/windows/splash/no-update-avail' );
+
+  // close the splash window after 2 seconds
+  // and open the main application window
+  setTimeout( () => {
+    win.handle.close();
+    ipcMain.emit( '/windows/main/open' );
+  }, 2000 );
 }
 
 function handleUpdateAvail( info: Object ) {
@@ -53,14 +64,28 @@ function fakeAutoUpdater() {
   const DOWNLOAD_FREQ = 500;
   const END_DOWNLOAD_DELAY = 5000;
 
+  // generate a random number to decide whether we'll
+  // fake an update or not
+  const num = Math.floor( Math.random() * 10 ) + 0;
+
   let ivl;
   let progress = 0;
 
   // immediately call `handleCheckingUpdate`
   handleCheckingUpdate();
 
-  // after two seconds, say we found an update
-  // and begin downloading it
+  // if we're below five then no update was found
+  // send the message and bail
+  if( num < 5 ) {
+    setTimeout( () => {
+      handleNoUpdateAvail({});
+    }, FOUND_DELAY );
+
+    return;
+  }
+
+  // otherwise, we're going to fake that we got an update
+  // after two seconds. and then begin "downloading" it
   setTimeout( () => {
     handleUpdateAvail({});
 
@@ -90,6 +115,7 @@ export default () => {
   if( is.production() ) {
     autoUpdater.checkForUpdates();
     autoUpdater.on( 'checking-for-update', handleCheckingUpdate );
+    autoUpdater.on( 'update-not-available', handleNoUpdateAvail );
     autoUpdater.on( 'download-progress', handleDownloadProgress );
     autoUpdater.on( 'update-downloaded', handleUpdateDownloaded );
   } else {
