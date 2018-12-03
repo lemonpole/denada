@@ -142,7 +142,7 @@ class Home extends Component<{}, State> {
     const date = moment( item.long_date );
     const income = item.paper_orders + item.deliveries;
 
-    let adjTotal = item.expenses;
+    let adjTotal = item.expenses || 0.00;
 
     if( Array.isArray( item.expenses ) && item.expenses.length > 0 ) {
       adjTotal = item.expenses
@@ -259,7 +259,7 @@ class Home extends Component<{}, State> {
                       label: 'Expenses',
                       borderColor: 'brown',
                       data: this.state.revenues.map( item => (
-                        item.expenses
+                        item.expenses || 0.00
                       ) )
                     }
                   ]

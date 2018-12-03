@@ -99,7 +99,7 @@ class App extends Component<{}, State> {
     evt.preventDefault();
     this.revenueObj.paper_orders = parseFloat( this.state.paperOrders.value );
     this.revenueObj.deliveries = parseFloat( this.state.deliveries.value );
-    this.revenueObj.expenses = parseFloat( this.state.expenses.value );
+    this.revenueObj.expenses = parseFloat( this.state.expenses.value ) || 0.00;
 
     ipcRenderer.send( '/windows/update-revenue/update', this.revenueObj );
     this.setState({ saving: true });
