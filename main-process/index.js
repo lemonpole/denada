@@ -6,7 +6,6 @@ import ipc from 'main/ipc';
 import { SplashWindow, MainWindow, UpdateRevenueWindow } from 'main/window-handlers';
 import Database from 'main/lib/database';
 import WindowManager from 'main/lib/window-manager';
-import DefaultMenu from 'main/lib/default-menu';
 
 
 // Override the default moment locale and force it to
@@ -21,9 +20,6 @@ moment.locale( 'en' );
 
 // event handlers
 function handleOnReady() {
-  // set the application menu
-  DefaultMenu.init();
-
   // connect to the database first
   Database.connect().then( () => {
     // once connected we can load the application's

@@ -1,11 +1,13 @@
 // @flow
 import path from 'path';
-import { ipcMain, dialog, nativeImage } from 'electron';
+import { ipcMain, dialog, nativeImage, Menu } from 'electron';
+import is from 'electron-is';
 import moment from 'moment';
 import is from 'electron-is';
 
 import Database from 'main/lib/database';
 import WindowManager from 'main/lib/window-manager';
+import DefaultMenuTemplate from 'main/lib/default-menu';
 import icondataurl from 'resources/background.png';
 
 
@@ -25,7 +27,14 @@ const CONFIG = {
 
 // ipc handlers
 function openWindowHandler( evt: Object, data: Object ) {
-  WindowManager.createWindow( '/windows/main', CONFIG.url, CONFIG.opts );
+  const win = WindowManager.createWindow( '/windows/main', CONFIG.url, CONFIG.opts );
+  win.handle.setMenu( DefaultMenuTemplate );
+
+  // the `setMenu` function above doesn't work on
+  // osx so we'll have to accomodate for that
+  if( is.osx() ) {
+    Menu.setApplicationMenu( DefaultMenuTemplate );
+  }
 }
 
 function generateWeek( date: Date | void ) {

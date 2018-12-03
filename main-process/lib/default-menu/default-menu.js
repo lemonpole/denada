@@ -14,7 +14,7 @@ export const MenuItems: Object = {
   HELP: is.osx() ? 4 : 3
 };
 
-export const DefaultMenuTemplate: Array<Object> = [
+export const RawDefaultMenuTemplate: Array<Object> = [
   {
     label: 'File',
     submenu: [
@@ -56,7 +56,7 @@ export const DefaultMenuTemplate: Array<Object> = [
 ];
 
 if( is.osx() ) {
-  DefaultMenuTemplate.unshift({
+  RawDefaultMenuTemplate.unshift({
     label: app.getName(),
     submenu: [
       { role: 'about' },
@@ -71,7 +71,7 @@ if( is.osx() ) {
     ]
   });
 
-  DefaultMenuTemplate[ MenuItems.WINDOW ].submenu = [
+  RawDefaultMenuTemplate[ MenuItems.WINDOW ].submenu = [
     { role: 'close' },
     { role: 'minimize' },
     { role: 'zoom' },
@@ -80,14 +80,5 @@ if( is.osx() ) {
   ];
 }
 
-// override the application's default menu with this one.
-// window managers can set their own menu if this doesn't
-// work for them...
-function init() {
-  const menu = Menu.buildFromTemplate( DefaultMenuTemplate );
-  Menu.setApplicationMenu( menu );
-}
-
-export default {
-  init
-};
+const DefaultMenuTemplate = Menu.buildFromTemplate( RawDefaultMenuTemplate );
+export default DefaultMenuTemplate;

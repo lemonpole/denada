@@ -1,1 +1,1 @@
-export { default, DefaultMenuTemplate, MenuItems } from './default-menu';
+export { default, RawDefaultMenuTemplate, MenuItems } from './default-menu';

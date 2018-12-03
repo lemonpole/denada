@@ -1,10 +1,11 @@
 // @flow
 import path from 'path';
-import { ipcMain } from 'electron';
+import { ipcMain, Menu } from 'electron';
 import is from 'electron-is';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import WindowManager from 'main/lib/window-manager';
+import { RawDefaultMenuTemplate, MenuItems } from 'main/lib/default-menu';
 
 
 // module-level variables and constants
@@ -152,6 +153,14 @@ function fakeAutoUpdater() {
 export default () => {
   // create the window
   win = WindowManager.createWindow( '/windows/splash', CONFIG.url, CONFIG.opts );
+  win.handle.setMenu( null );
+
+  // on osx it's enforced to show the Application Menu item
+  // and in addition, the `setMenu` function doesn't work
+  if( is.osx() ) {
+    const m = Menu.buildFromTemplate( [ RawDefaultMenuTemplate[ MenuItems.APPNAME ] ] );
+    Menu.setApplicationMenu( m );
+  }
 
   // if in production use the real auto-updater
   // otherwise use the fake one.
